@@ -6,6 +6,7 @@ using FikaAmazonAPI.AmazonSpApiSDK.Services;
 using FikaAmazonAPI.Search;
 using FikaAmazonAPI.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -277,7 +278,7 @@ namespace FikaAmazonAPI.Services
         }
         protected void AddJsonBody(object jsonData)
         {
-            var json = JsonConvert.SerializeObject(jsonData);
+            var json = JsonConvert.SerializeObject(jsonData,new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
             Request.AddJsonBody(json);
         }
         protected void AddAccessToken()
