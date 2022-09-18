@@ -10,6 +10,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+//using System.Runtime.Serialization;
 
 namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
 {
@@ -24,7 +25,6 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
         /// <summary>
         /// Enum NewItem for value: NewItem
         /// </summary>
-
         NewItem,
 
         /// <summary>
