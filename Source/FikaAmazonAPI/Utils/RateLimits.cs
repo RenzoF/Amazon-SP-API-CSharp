@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace FikaAmazonAPI.Utils
@@ -22,7 +25,19 @@ namespace FikaAmazonAPI.Utils
         {
             if (RequestsSent < 0)
                 RequestsSent = 0;
-
+            var rabs = new RateAbstract();
+            //try to load a request sent from file
+            if (!File.Exists($"{rateLimitType}.json"))
+            {
+                File.WriteAllText($"{rateLimitType}.json", JsonConvert.SerializeObject(rabs));
+            }
+            else
+            {
+                rabs = JsonConvert.DeserializeObject<RateAbstract>(File.ReadAllText($"{rateLimitType}.json"));
+                RequestsSent = rabs.RequestSent;
+                LastRequest = rabs.LastRun;
+            }
+            
 
             int ratePeriodMs = GetRatePeriodMs();
 
@@ -38,7 +53,7 @@ namespace FikaAmazonAPI.Utils
                 var LastRequestTime = LastRequest;
                 while (true)
                 {
-                    LastRequestTime = LastRequestTime.AddMilliseconds(ratePeriodMs);
+                    LastRequestTime = LastRequestTime.AddMilliseconds(ratePeriodMs);                    
                     if (LastRequestTime > DateTime.UtcNow)
                         break;
                     else
@@ -64,8 +79,13 @@ namespace FikaAmazonAPI.Utils
 
 
             if (RequestsSent + 1 <= Burst)
+            {
                 RequestsSent += 1;
+                rabs.RequestSent = RequestsSent;
+            }
             LastRequest = DateTime.UtcNow;
+            rabs.LastRun = LastRequest;
+            File.WriteAllText($"{rateLimitType}.json", JsonConvert.SerializeObject(rabs));
 
             return this;
         }
