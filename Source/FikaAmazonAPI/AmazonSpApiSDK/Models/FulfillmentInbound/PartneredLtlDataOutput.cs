@@ -58,7 +58,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
         /// <param name="IsBillOfLadingAvailable">Indicates whether the bill of lading for the shipment is available. (required).</param>
         /// <param name="PartneredEstimate">The estimated shipping cost using an Amazon-partnered carrier..</param>
         /// <param name="CarrierName">The carrier for the inbound shipment. (required).</param>
-        public PartneredLtlDataOutput(Contact Contact = default(Contact), UnsignedIntType BoxCount = default(UnsignedIntType), SellerFreightClass? SellerFreightClass = default(SellerFreightClass?), string FreightReadyDate = default(string), PalletList PalletList = default(PalletList), Weight TotalWeight = default(Weight), Amount SellerDeclaredValue = default(Amount), Amount AmazonCalculatedValue = default(Amount), string PreviewPickupDate = default(string), string PreviewDeliveryDate = default(string), SellerFreightClass PreviewFreightClass = default(SellerFreightClass), string AmazonReferenceId = default(string), bool? IsBillOfLadingAvailable = default(bool?), PartneredEstimate PartneredEstimate = default(PartneredEstimate), string CarrierName = default(string))
+        public PartneredLtlDataOutput(Contact Contact = default(Contact), int BoxCount = default(int), SellerFreightClass? SellerFreightClass = default(SellerFreightClass?), string FreightReadyDate = default(string), PalletList PalletList = default(PalletList), Weight TotalWeight = default(Weight), Amount SellerDeclaredValue = default(Amount), Amount AmazonCalculatedValue = default(Amount), string PreviewPickupDate = default(string), string PreviewDeliveryDate = default(string), SellerFreightClass PreviewFreightClass = default(SellerFreightClass), string AmazonReferenceId = default(string), bool? IsBillOfLadingAvailable = default(bool?), PartneredEstimate PartneredEstimate = default(PartneredEstimate), string CarrierName = default(string))
         {
             // to ensure "Contact" is required (not null)
             if (Contact == null)
@@ -177,7 +177,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
         /// </summary>
         /// <value>The number of boxes in the shipment.</value>
         [DataMember(Name = "BoxCount", EmitDefaultValue = false)]
-        public UnsignedIntType BoxCount { get; set; }
+        public int BoxCount { get; set; }
 
 
         /// <summary>
