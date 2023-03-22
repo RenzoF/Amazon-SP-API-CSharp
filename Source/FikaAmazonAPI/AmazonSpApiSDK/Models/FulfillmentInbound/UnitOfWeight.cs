@@ -18,7 +18,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
     /// Indicates the unit of weight.
     /// </summary>
     /// <value>Indicates the unit of weight.</value>
+
     [JsonConverter(typeof(StringEnumConverter))]
+
     public enum UnitOfWeight
     {
 
@@ -26,13 +28,13 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentInbound
         /// Enum Pounds for value: pounds
         /// </summary>
         [EnumMember(Value = "pounds")]
-        Pounds,
+        Pounds = 1,
 
         /// <summary>
         /// Enum Kilograms for value: kilograms
         /// </summary>
         [EnumMember(Value = "kilograms")]
-        Kilograms
+        Kilograms = 2
     }
 
 }

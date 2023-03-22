@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FikaAmazonAPI.AmazonSpApiSDK.Runtime
@@ -10,9 +11,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Runtime
     public class LWAClient
     {
         public const string AccessTokenKey = "access_token";
-        public const string JsonMediaType = "application/json; charset=utf-8";
+        public const string JsonMediaType = "application/json";
 
-        public IRestClient RestClient { get; set; }
+        public RestClient RestClient { get; set; }
         public LWAAccessTokenRequestMetaBuilder LWAAccessTokenRequestMetaBuilder { get; set; }
         public LWAAuthorizationCredentials LWAAuthorizationCredentials { get; private set; }
 
@@ -31,18 +32,19 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Runtime
         /// </summary>
         /// <param name="lwaAccessTokenRequestMeta">LWA AccessTokenRequest metadata</param>
         /// <returns>LWA Access Token</returns>
-        public virtual async Task<TokenResponse> GetAccessTokenAsync()
+        public virtual async Task<TokenResponse> GetAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             LWAAccessTokenRequestMeta lwaAccessTokenRequestMeta = LWAAccessTokenRequestMetaBuilder.Build(LWAAuthorizationCredentials);
-            var accessTokenRequest = new RestRequest(LWAAuthorizationCredentials.Endpoint.AbsolutePath, RestSharp.Method.POST);
+            var accessTokenRequest = new RestRequest(LWAAuthorizationCredentials.Endpoint.AbsolutePath, RestSharp.Method.Post);
 
             string jsonRequestBody = JsonConvert.SerializeObject(lwaAccessTokenRequestMeta);
 
-            accessTokenRequest.AddParameter(JsonMediaType, jsonRequestBody, ParameterType.RequestBody);
+            //accessTokenRequest.AddParameter(JsonMediaType, jsonRequestBody, ParameterType.RequestBody);
+            accessTokenRequest.AddJsonBody(jsonRequestBody);
 
             try
             {
-                var response = await RestClient.ExecuteAsync(accessTokenRequest).ConfigureAwait(false);
+                var response = await RestClient.ExecuteAsync(accessTokenRequest, cancellationToken).ConfigureAwait(false);
 
                 if (!IsSuccessful(response))
                 {
@@ -60,7 +62,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Runtime
             }
         }
 
-        private bool IsSuccessful(IRestResponse response)
+        private bool IsSuccessful(RestResponse response)
         {
             int statusCode = (int)response.StatusCode;
             return statusCode >= 200 && statusCode <= 299 && response.ResponseStatus == ResponseStatus.Completed;

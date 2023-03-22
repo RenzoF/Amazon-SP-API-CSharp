@@ -11,6 +11,11 @@
         Order_GetOrderItems,
         Order_GetOrderItemsBuyerInfo,
         Order_UpdateShipmentStatus,
+        Order_GetOrderRegulatedInfo,
+        Order_UpdateVerificationStatus,
+        Order_UpdateOrderItemsApprovals,
+        Order_ShipmentConfirmation,
+
 
         Report_GetReports,
         Report_GetReport,
@@ -179,5 +184,11 @@
         ShippingV2_DirectPurchaseShipment,
         ShippingV2_GetTracking,
         ShippingV2_GetAdditionalInputs,
+
+        VendorOrdersV1_GetPurchaseOrders,
+        VendorOrdersV1_GetPurchaseOrder,
+        VendorOrdersV1_SubmitAcknowledgement,
+        VendorOrdersV1_GetPurchaseOrdersStatus,
+
     }
 }

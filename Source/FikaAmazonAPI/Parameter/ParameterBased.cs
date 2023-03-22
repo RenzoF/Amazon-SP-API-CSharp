@@ -30,6 +30,8 @@ namespace FikaAmazonAPI.Search
             foreach (PropertyInfo p in pi)
             {
                 if (p.CustomAttributes.Any(x => x.AttributeType == typeof(IgnoreToAddParameterAttribute))) continue;
+                if (p.CustomAttributes.Any(x => x.AttributeType == typeof(PathParameterAttribute))) continue;
+                if (p.CustomAttributes.Any(x => x.AttributeType == typeof(BodyParameterAttribute))) continue;
                 var value = p.GetValue(this);
                 if (value != null)
                 {
@@ -48,32 +50,32 @@ namespace FikaAmazonAPI.Search
                     {
                         output = value.ToString();
                     }
-                    else if(p.PropertyType.IsEnum || IsNullableEnum(p.PropertyType))
+                    else if (p.PropertyType.IsEnum || IsNullableEnum(p.PropertyType))
                     {
                         output = value.ToString();
                     }
                     else if (IsEnumerableOfEnum(p.PropertyType) || IsEnumerable(p.PropertyType))
                     {
-                        var data = ((IEnumerable)value).Cast<object>().Select(a => a.ToString());
+                        var data = ((ICollection)value).Cast<object>().Select(a => a.ToString());
                         if (data.Count() > 0)
                         {
                             var result = data.ToArray();
-                            output = String.Join(",", result);
+                            output = string.Join(",", result);
                         }
                         else continue;
-                        
+
                     }
                     else
                     {
                         output = JsonConvert.SerializeObject(value);
                     }
-                    
+
 
                     var propName = p.Name;
 
                     queryParameters.Add(new KeyValuePair<string, string>(propName, output));
                 }
-                
+
             }
 
             return queryParameters;
@@ -95,6 +97,7 @@ namespace FikaAmazonAPI.Search
             {
                 if (type.IsGenericType
                     && (type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                        || type.GetGenericTypeDefinition() == typeof(ICollection<>)
                         || type.GetGenericTypeDefinition() == typeof(IList<>)
                         || type.GetGenericTypeDefinition() == typeof(List<>)))
                 {

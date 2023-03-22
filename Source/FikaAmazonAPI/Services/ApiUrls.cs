@@ -165,7 +165,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Services
         {
             private readonly static string _resourceBaseUrl = "/messaging/v1";
 
-            public static string GetMessagingActionsForOrder(string amazonOrderId, string marketplaceIds) => $"{_resourceBaseUrl}/orders/{amazonOrderId}?marketplaceIds={marketplaceIds}";
+            public static string GetMessagingActionsForOrder(string amazonOrderId) => $"{_resourceBaseUrl}/orders/{amazonOrderId}";
             public static string ConfirmCustomizationDetails(string amazonOrderId) => $"{_resourceBaseUrl}/orders/{amazonOrderId}/messages/confirmCustomizationDetails";
             public static string CreateConfirmDeliveryDetails(string amazonOrderId) => $"{_resourceBaseUrl}/orders/{amazonOrderId}/messages/confirmDeliveryDetails";
             public static string CreateLegalDisclosure(string amazonOrderId) => $"{_resourceBaseUrl}/orders/{amazonOrderId}/messages/legalDisclosure";
@@ -293,7 +293,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Services
         }
         internal class ProductPricingApiUrls
         {
-            private readonly static string _resourceBaseUrl = "/products/pricing/v0";
+            private static readonly string _resourceBaseUrl = "/products/pricing/v0";
             public static string GetPricing
             {
                 get => $"{_resourceBaseUrl}/price";
@@ -311,6 +311,11 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Services
 
             public static string GetBatchListingOffers => $"/batches{_resourceBaseUrl}/listingOffers";
 
+            #region v2022-05-01
+            private static readonly string _resourceBaseUrl_v20220501 = "/products/pricing/2022-05-01";
+            public static string FeaturedOfferExpectedPriceUri => $"{_resourceBaseUrl_v20220501}/offer/featuredOfferExpectedPrice";
+            public static string GetFeaturedOfferExpectedPriceBatch => $"/batches{FeaturedOfferExpectedPriceUri}";
+            #endregion
         }
         protected class ProductTypeApiUrls
         {
@@ -361,6 +366,23 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Services
                 get => $"{_resourceBaseUrl}/acknowledgements";
             }
             public static string GetOrder(string purchaseOrderNumber) => $"{_resourceBaseUrl}/purchaseOrders/{purchaseOrderNumber}";
+        }
+        protected class VendorOrdersApiUrls
+        {
+            private readonly static string _resourceBaseUrl = "/vendor/orders/v1";
+            public static string GetPurchaseOrders
+            {
+                get => $"{_resourceBaseUrl}/purchaseOrders";
+            }
+            public static string GetPurchaseOrder(string purchaseOrderNumber) => $"{_resourceBaseUrl}/purchaseOrders/{purchaseOrderNumber}";
+            public static string SubmitAcknowledgement
+            {
+                get => $"{_resourceBaseUrl}/acknowledgements";
+            }
+            public static string GetPurchaseOrdersStatus
+            {
+                get => $"{_resourceBaseUrl}/purchaseOrdersStatus";
+            }
         }
         protected class UploadApiUrls
         {
@@ -510,6 +532,12 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Services
             public static string OrderBuyerInfo(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/buyerInfo";
             public static string OrderItemsBuyerInfo(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/orderItems/buyerInfo";
             public static string OrderShipmentInfo(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/address";
+            public static string UpdateShipmentStatus(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/shipment";
+            public static string GetOrderRegulatedInfo(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/regulatedInfo";
+            public static string UpdateVerificationStatus(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/regulatedInfo";
+            public static string GetOrderItemsApprovals(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/approvals";
+            public static string UpdateOrderItemsApprovals(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/approvals";
+            public static string ConfirmShipment(string orderId) => $"{_resourceBaseUrl}/orders/{orderId}/shipmentConfirmation";
         }
 
         protected class CategoryApiUrls

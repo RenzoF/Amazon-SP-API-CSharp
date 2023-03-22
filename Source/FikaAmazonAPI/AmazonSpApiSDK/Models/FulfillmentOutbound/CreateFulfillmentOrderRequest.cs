@@ -11,6 +11,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.Serialization;
@@ -28,17 +29,25 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
         /// The shipping method for the fulfillment order.
         /// </summary>
         /// <value>The shipping method for the fulfillment order.</value>
-        [DataMember(Name = "ShippingSpeedCategory", EmitDefaultValue = false)]
-        public ShippingSpeedCategory ShippingSpeedCategory { get; set; }
-        /// <summary>
-        /// Gets or Sets FulfillmentAction
-        /// </summary>
-        [DataMember(Name = "FulfillmentAction", EmitDefaultValue = false)]
+        [DataMember(Name = "shippingSpeedCategory", EmitDefaultValue = false)]
+		[Obsolete("Use ShippingSpeedCategoryMethod instead")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public string ShippingSpeedCategory { get; set; }
+		public ShippingSpeedCategory ShippingSpeedCategoryMethod {
+#pragma warning disable 0618
+            get => (ShippingSpeedCategory)Enum.Parse(typeof(ShippingSpeedCategory), ShippingSpeedCategory, true);
+            set => ShippingSpeedCategory = value.ToString();
+#pragma warning restore 0618
+		}
+		/// <summary>
+		/// Gets or Sets FulfillmentAction
+		/// </summary>
+		[DataMember(Name = "fulfillmentAction", EmitDefaultValue = false)]
         public FulfillmentAction? FulfillmentAction { get; set; }
         /// <summary>
         /// Gets or Sets FulfillmentPolicy
         /// </summary>
-        [DataMember(Name = "FulfillmentPolicy", EmitDefaultValue = false)]
+        [DataMember(Name = "fulfillmentPolicy", EmitDefaultValue = false)]
         public FulfillmentPolicy? FulfillmentPolicy { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateFulfillmentOrderRequest" /> class.
@@ -63,7 +72,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
         /// <param name="ShipFromCountryCode">The two-character country code for the country from which the fulfillment order ships. Must be in ISO 3166-1 alpha-2 format..</param>
         /// <param name="NotificationEmailList">NotificationEmailList.</param>
         /// <param name="Items">A list of items to include in the fulfillment order preview, including quantity. (required).</param>
-        public CreateFulfillmentOrderRequest(string MarketplaceId = default(string), string SellerFulfillmentOrderId = default(string), string DisplayableOrderId = default(string), DateTime DisplayableOrderDate = default(DateTime), string DisplayableOrderComment = default(string), ShippingSpeedCategory ShippingSpeedCategory = default(ShippingSpeedCategory), DeliveryWindow DeliveryWindow = default(DeliveryWindow), Address DestinationAddress = default(Address), FulfillmentAction? FulfillmentAction = default(FulfillmentAction?), FulfillmentPolicy? FulfillmentPolicy = default(FulfillmentPolicy?), string FulfillmentMethod = default(string), CODSettings CODSettings = default(CODSettings), string ShipFromCountryCode = default(string), NotificationEmailList NotificationEmailList = default(NotificationEmailList), CreateFulfillmentOrderItemList Items = default(CreateFulfillmentOrderItemList))
+        [Obsolete("FulfillmentMethod no longer used and ShippingSpeedCategory is deprecated, use the other constructor instead")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public CreateFulfillmentOrderRequest(string MarketplaceId = default(string), string SellerFulfillmentOrderId = default(string), string DisplayableOrderId = default(string), DateTime? DisplayableOrderDate = default(DateTime?), string DisplayableOrderComment = default(string), string ShippingSpeedCategory = null, DeliveryWindow DeliveryWindow = default(DeliveryWindow), Address DestinationAddress = default(Address), FulfillmentAction? FulfillmentAction = default(FulfillmentAction?), FulfillmentPolicy? FulfillmentPolicy = default(FulfillmentPolicy?), string FulfillmentMethod = default(string), CODSettings CODSettings = default(CODSettings), string ShipFromCountryCode = default(string), NotificationEmailList NotificationEmails = default(NotificationEmailList), CreateFulfillmentOrderItemList Items = default(CreateFulfillmentOrderItemList))
         {
             // to ensure "SellerFulfillmentOrderId" is required (not null)
             if (SellerFulfillmentOrderId == null)
@@ -90,7 +101,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
             }
             else
             {
-                this.DisplayableOrderDate = DisplayableOrderDate;
+                this.DisplayableOrderDate = DisplayableOrderDate.Value;
             }
             // to ensure "DisplayableOrderComment" is required (not null)
             if (DisplayableOrderComment == null)
@@ -108,10 +119,12 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
             }
             else
             {
-                this.ShippingSpeedCategory = ShippingSpeedCategory;
-            }
-            // to ensure "DestinationAddress" is required (not null)
-            if (DestinationAddress == null)
+#pragma warning disable 0618
+				this.ShippingSpeedCategory = ShippingSpeedCategory;
+#pragma warning restore 0618
+			}
+			// to ensure "DestinationAddress" is required (not null)
+			if (DestinationAddress == null)
             {
                 throw new InvalidDataException("DestinationAddress is a required property for CreateFulfillmentOrderRequest and cannot be null");
             }
@@ -132,94 +145,99 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
             this.DeliveryWindow = DeliveryWindow;
             this.FulfillmentAction = FulfillmentAction;
             this.FulfillmentPolicy = FulfillmentPolicy;
-            this.FulfillmentMethod = FulfillmentMethod;
             this.CODSettings = CODSettings;
             this.ShipFromCountryCode = ShipFromCountryCode;
-            this.NotificationEmailList = NotificationEmailList;
+            this.NotificationEmails = NotificationEmails;
         }
+#pragma warning disable 0618
+        public CreateFulfillmentOrderRequest(string MarketplaceId = default(string), string SellerFulfillmentOrderId = default(string), string DisplayableOrderId = default(string), DateTime? DisplayableOrderDate = default(DateTime?), string DisplayableOrderComment = default(string), ShippingSpeedCategory? ShippingSpeedCategory = default(ShippingSpeedCategory?), DeliveryWindow DeliveryWindow = default(DeliveryWindow), Address DestinationAddress = default(Address), FulfillmentAction? FulfillmentAction = default(FulfillmentAction?), FulfillmentPolicy? FulfillmentPolicy = default(FulfillmentPolicy?), CODSettings CODSettings = default(CODSettings), string ShipFromCountryCode = default(string), NotificationEmailList NotificationEmails = default(NotificationEmailList), CreateFulfillmentOrderItemList Items = default(CreateFulfillmentOrderItemList))
+            : this(MarketplaceId, SellerFulfillmentOrderId, DisplayableOrderId, DisplayableOrderDate, DisplayableOrderComment, ShippingSpeedCategory?.ToString(), DeliveryWindow, DestinationAddress, FulfillmentAction, FulfillmentPolicy, null, CODSettings, ShipFromCountryCode, NotificationEmails, Items) { }
+#pragma warning restore 0618
 
         /// <summary>
         /// The marketplace the fulfillment order is placed against.
         /// </summary>
         /// <value>The marketplace the fulfillment order is placed against.</value>
-        [DataMember(Name = "MarketplaceId", EmitDefaultValue = false)]
+        [DataMember(Name = "marketplaceId", EmitDefaultValue = false)]
         public string MarketplaceId { get; set; }
 
         /// <summary>
         /// A fulfillment order identifier that the seller creates to track their fulfillment order. The SellerFulfillmentOrderId must be unique for each fulfillment order that a seller creates. If the seller&#39;s system already creates unique order identifiers, then these might be good values for them to use.
         /// </summary>
         /// <value>A fulfillment order identifier that the seller creates to track their fulfillment order. The SellerFulfillmentOrderId must be unique for each fulfillment order that a seller creates. If the seller&#39;s system already creates unique order identifiers, then these might be good values for them to use.</value>
-        [DataMember(Name = "SellerFulfillmentOrderId", EmitDefaultValue = false)]
+        [DataMember(Name = "sellerFulfillmentOrderId", EmitDefaultValue = false)]
         public string SellerFulfillmentOrderId { get; set; }
 
         /// <summary>
         /// A fulfillment order identifier that the seller creates. This value displays as the order identifier in recipient-facing materials such as the outbound shipment packing slip. The value of DisplayableOrderId should match the order identifier that the seller provides to the recipient. The seller can use the SellerFulfillmentOrderId for this value or they can specify an alternate value if they want the recipient to reference an alternate order identifier.  The value must be an alpha-numeric or ISO 8859-1 compliant string from one to 40 characters in length. Cannot contain two spaces in a row. Leading and trailing white space is removed.
         /// </summary>
         /// <value>A fulfillment order identifier that the seller creates. This value displays as the order identifier in recipient-facing materials such as the outbound shipment packing slip. The value of DisplayableOrderId should match the order identifier that the seller provides to the recipient. The seller can use the SellerFulfillmentOrderId for this value or they can specify an alternate value if they want the recipient to reference an alternate order identifier.  The value must be an alpha-numeric or ISO 8859-1 compliant string from one to 40 characters in length. Cannot contain two spaces in a row. Leading and trailing white space is removed.</value>
-        [DataMember(Name = "DisplayableOrderId", EmitDefaultValue = false)]
+        [DataMember(Name = "displayableOrderId", EmitDefaultValue = false)]
         public string DisplayableOrderId { get; set; }
 
         /// <summary>
         /// The date and time of the fulfillment order. Displays as the order date in recipient-facing materials such as the outbound shipment packing slip.
         /// </summary>
         /// <value>The date and time of the fulfillment order. Displays as the order date in recipient-facing materials such as the outbound shipment packing slip.</value>
-        [DataMember(Name = "DisplayableOrderDate", EmitDefaultValue = false)]
+        [DataMember(Name = "displayableOrderDate", EmitDefaultValue = false)]
         public DateTime DisplayableOrderDate { get; set; }
 
         /// <summary>
         /// Order-specific text that appears in recipient-facing materials such as the outbound shipment packing slip.
         /// </summary>
         /// <value>Order-specific text that appears in recipient-facing materials such as the outbound shipment packing slip.</value>
-        [DataMember(Name = "DisplayableOrderComment", EmitDefaultValue = false)]
+        [DataMember(Name = "displayableOrderComment", EmitDefaultValue = false)]
         public string DisplayableOrderComment { get; set; }
 
 
         /// <summary>
         /// Gets or Sets DeliveryWindow
         /// </summary>
-        [DataMember(Name = "DeliveryWindow", EmitDefaultValue = false)]
+        [DataMember(Name = "deliveryWindow", EmitDefaultValue = false)]
         public DeliveryWindow DeliveryWindow { get; set; }
 
         /// <summary>
         /// The destination address for the fulfillment order.
         /// </summary>
         /// <value>The destination address for the fulfillment order.</value>
-        [DataMember(Name = "DestinationAddress", EmitDefaultValue = false)]
+        [DataMember(Name = "destinationAddress", EmitDefaultValue = false)]
         public Address DestinationAddress { get; set; }
 
 
 
-        /// <summary>
-        /// Indicates the intended recipient channel for the order.
-        /// </summary>
-        /// <value>Indicates the intended recipient channel for the order.</value>
-        [DataMember(Name = "FulfillmentMethod", EmitDefaultValue = false)]
-        public string FulfillmentMethod { get; set; }
+		/// <summary>
+		/// Indicates the intended recipient channel for the order.
+		/// </summary>
+		/// <value>Indicates the intended recipient channel for the order.</value>
+		[DataMember(Name = "FulfillmentMethod", EmitDefaultValue = false)]
+		[Obsolete("Property no longer used")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public string FulfillmentMethod { get; set; }
 
-        /// <summary>
-        /// Gets or Sets CODSettings
-        /// </summary>
-        [DataMember(Name = "CODSettings", EmitDefaultValue = false)]
+		/// <summary>
+		/// Gets or Sets CODSettings
+		/// </summary>
+		[DataMember(Name = "codSettings", EmitDefaultValue = false)]
         public CODSettings CODSettings { get; set; }
 
         /// <summary>
         /// The two-character country code for the country from which the fulfillment order ships. Must be in ISO 3166-1 alpha-2 format.
         /// </summary>
         /// <value>The two-character country code for the country from which the fulfillment order ships. Must be in ISO 3166-1 alpha-2 format.</value>
-        [DataMember(Name = "ShipFromCountryCode", EmitDefaultValue = false)]
+        [DataMember(Name = "shipFromCountryCode", EmitDefaultValue = false)]
         public string ShipFromCountryCode { get; set; }
 
         /// <summary>
-        /// Gets or Sets NotificationEmailList
+        /// Gets or Sets NotificationEmails
         /// </summary>
-        [DataMember(Name = "NotificationEmailList", EmitDefaultValue = false)]
-        public NotificationEmailList NotificationEmailList { get; set; }
+        [DataMember(Name = "notificationEmails", EmitDefaultValue = false)]
+        public NotificationEmailList NotificationEmails { get; set; }
 
         /// <summary>
         /// A list of items to include in the fulfillment order preview, including quantity.
         /// </summary>
         /// <value>A list of items to include in the fulfillment order preview, including quantity.</value>
-        [DataMember(Name = "Items", EmitDefaultValue = false)]
+        [DataMember(Name = "items", EmitDefaultValue = false)]
         public CreateFulfillmentOrderItemList Items { get; set; }
 
         /// <summary>
@@ -235,15 +253,16 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
             sb.Append("  DisplayableOrderId: ").Append(DisplayableOrderId).Append("\n");
             sb.Append("  DisplayableOrderDate: ").Append(DisplayableOrderDate).Append("\n");
             sb.Append("  DisplayableOrderComment: ").Append(DisplayableOrderComment).Append("\n");
-            sb.Append("  ShippingSpeedCategory: ").Append(ShippingSpeedCategory).Append("\n");
-            sb.Append("  DeliveryWindow: ").Append(DeliveryWindow).Append("\n");
+#pragma warning disable 0618
+			sb.Append("  ShippingSpeedCategory: ").Append(ShippingSpeedCategory).Append("\n");
+#pragma warning restore 0618
+			sb.Append("  DeliveryWindow: ").Append(DeliveryWindow).Append("\n");
             sb.Append("  DestinationAddress: ").Append(DestinationAddress).Append("\n");
             sb.Append("  FulfillmentAction: ").Append(FulfillmentAction).Append("\n");
             sb.Append("  FulfillmentPolicy: ").Append(FulfillmentPolicy).Append("\n");
-            sb.Append("  FulfillmentMethod: ").Append(FulfillmentMethod).Append("\n");
             sb.Append("  CODSettings: ").Append(CODSettings).Append("\n");
             sb.Append("  ShipFromCountryCode: ").Append(ShipFromCountryCode).Append("\n");
-            sb.Append("  NotificationEmailList: ").Append(NotificationEmailList).Append("\n");
+            sb.Append("  NotificationEmails: ").Append(NotificationEmails).Append("\n");
             sb.Append("  Items: ").Append(Items).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -305,10 +324,12 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
                     this.DisplayableOrderComment.Equals(input.DisplayableOrderComment))
                 ) &&
                 (
-                    this.ShippingSpeedCategory == input.ShippingSpeedCategory ||
+#pragma warning disable 0618
+					this.ShippingSpeedCategory == input.ShippingSpeedCategory ||
                     (this.ShippingSpeedCategory != null &&
                     this.ShippingSpeedCategory.Equals(input.ShippingSpeedCategory))
-                ) &&
+#pragma warning restore 0618
+				) &&
                 (
                     this.DeliveryWindow == input.DeliveryWindow ||
                     (this.DeliveryWindow != null &&
@@ -330,11 +351,6 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
                     this.FulfillmentPolicy.Equals(input.FulfillmentPolicy))
                 ) &&
                 (
-                    this.FulfillmentMethod == input.FulfillmentMethod ||
-                    (this.FulfillmentMethod != null &&
-                    this.FulfillmentMethod.Equals(input.FulfillmentMethod))
-                ) &&
-                (
                     this.CODSettings == input.CODSettings ||
                     (this.CODSettings != null &&
                     this.CODSettings.Equals(input.CODSettings))
@@ -345,9 +361,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
                     this.ShipFromCountryCode.Equals(input.ShipFromCountryCode))
                 ) &&
                 (
-                    this.NotificationEmailList == input.NotificationEmailList ||
-                    (this.NotificationEmailList != null &&
-                    this.NotificationEmailList.Equals(input.NotificationEmailList))
+                    this.NotificationEmails == input.NotificationEmails ||
+                    (this.NotificationEmails != null &&
+                    this.NotificationEmails.Equals(input.NotificationEmails))
                 ) &&
                 (
                     this.Items == input.Items ||
@@ -375,9 +391,11 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
                     hashCode = hashCode * 59 + this.DisplayableOrderDate.GetHashCode();
                 if (this.DisplayableOrderComment != null)
                     hashCode = hashCode * 59 + this.DisplayableOrderComment.GetHashCode();
-                if (this.ShippingSpeedCategory != null)
+#pragma warning disable 0618
+				if (this.ShippingSpeedCategory != null)
                     hashCode = hashCode * 59 + this.ShippingSpeedCategory.GetHashCode();
-                if (this.DeliveryWindow != null)
+#pragma warning restore 0618
+				if (this.DeliveryWindow != null)
                     hashCode = hashCode * 59 + this.DeliveryWindow.GetHashCode();
                 if (this.DestinationAddress != null)
                     hashCode = hashCode * 59 + this.DestinationAddress.GetHashCode();
@@ -385,14 +403,12 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.FulfillmentOutbound
                     hashCode = hashCode * 59 + this.FulfillmentAction.GetHashCode();
                 if (this.FulfillmentPolicy != null)
                     hashCode = hashCode * 59 + this.FulfillmentPolicy.GetHashCode();
-                if (this.FulfillmentMethod != null)
-                    hashCode = hashCode * 59 + this.FulfillmentMethod.GetHashCode();
                 if (this.CODSettings != null)
                     hashCode = hashCode * 59 + this.CODSettings.GetHashCode();
                 if (this.ShipFromCountryCode != null)
                     hashCode = hashCode * 59 + this.ShipFromCountryCode.GetHashCode();
-                if (this.NotificationEmailList != null)
-                    hashCode = hashCode * 59 + this.NotificationEmailList.GetHashCode();
+                if (this.NotificationEmails != null)
+                    hashCode = hashCode * 59 + this.NotificationEmails.GetHashCode();
                 if (this.Items != null)
                     hashCode = hashCode * 59 + this.Items.GetHashCode();
                 return hashCode;

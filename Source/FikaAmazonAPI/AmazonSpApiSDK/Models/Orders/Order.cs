@@ -149,6 +149,12 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         [DataMember(Name = "PaymentMethod", EmitDefaultValue = false)]
         public PaymentMethodEnum? PaymentMethod { get; set; }
         /// <summary>
+        /// The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders.
+        /// </summary>
+        /// <value>The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders.</value>
+        [DataMember(Name = "EasyShipShipmentStatus", EmitDefaultValue = false)]
+        public EasyShipShipmentStatus? EasyShipShipmentStatus { get; set; }
+        /// <summary>
         /// The type of the order.
         /// </summary>
         /// <value>The type of the order.</value>
@@ -194,6 +200,39 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         [DataMember(Name = "OrderType", EmitDefaultValue = false)]
         public OrderTypeEnum? OrderType { get; set; }
         /// <summary>
+        /// The buyer&#39;s invoicing preference. Available only in the TR marketplace.
+        /// </summary>
+        /// <value>The buyer&#39;s invoicing preference. Available only in the TR marketplace.</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum BuyerInvoicePreferenceEnum
+        {
+
+            /// <summary>
+            /// Enum INDIVIDUAL for value: INDIVIDUAL
+            /// </summary>
+            [EnumMember(Value = "INDIVIDUAL")]
+            INDIVIDUAL = 1,
+
+            /// <summary>
+            /// Enum BUSINESS for value: BUSINESS
+            /// </summary>
+            [EnumMember(Value = "BUSINESS")]
+            BUSINESS = 2
+        }
+
+        /// <summary>
+        /// The buyer&#39;s invoicing preference. Available only in the TR marketplace.
+        /// </summary>
+        /// <value>The buyer&#39;s invoicing preference. Available only in the TR marketplace.</value>
+        [DataMember(Name = "BuyerInvoicePreference", EmitDefaultValue = false)]
+        public BuyerInvoicePreferenceEnum? BuyerInvoicePreference { get; set; }
+        /// <summary>
+        /// The status of the electronic invoice.
+        /// </summary>
+        /// <value>The status of the electronic invoice.</value>
+        [DataMember(Name = "ElectronicInvoiceStatus", EmitDefaultValue = false)]
+        public ElectronicInvoiceStatus? ElectronicInvoiceStatus { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="Order" /> class.
         /// </summary>
         [JsonConstructorAttribute]
@@ -204,7 +243,7 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         /// <param name="amazonOrderId">An Amazon-defined order identifier, in 3-7-7 format. (required).</param>
         /// <param name="sellerOrderId">A seller-defined order identifier..</param>
         /// <param name="purchaseDate">The date when the order was created. (required).</param>
-        /// <param name="lastUpdateDate">The date when the order was last updated.  Note: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01. (required).</param>
+        /// <param name="lastUpdateDate">The date when the order was last updated.  __Note__: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01. (required).</param>
         /// <param name="orderStatus">The current order status. (required).</param>
         /// <param name="fulfillmentChannel">Whether the order was fulfilled by Amazon (AFN) or by the seller (MFN)..</param>
         /// <param name="salesChannel">The sales channel of the first item in the order..</param>
@@ -213,16 +252,16 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         /// <param name="orderTotal">The total charge for this order..</param>
         /// <param name="numberOfItemsShipped">The number of items shipped..</param>
         /// <param name="numberOfItemsUnshipped">The number of items unshipped..</param>
-        /// <param name="paymentExecutionDetail">Information about sub-payment methods for a Cash On Delivery (COD) order.  Note: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned..</param>
+        /// <param name="paymentExecutionDetail">Information about sub-payment methods for a Cash On Delivery (COD) order.  __Note__: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned..</param>
         /// <param name="paymentMethod">The payment method for the order. This property is limited to Cash On Delivery (COD) and Convenience Store (CVS) payment methods. Unless you need the specific COD payment information provided by the PaymentExecutionDetailItem object, we recommend using the PaymentMethodDetails property to get payment method information..</param>
         /// <param name="paymentMethodDetails">A list of payment methods for the order..</param>
         /// <param name="marketplaceId">The identifier for the marketplace where the order was placed..</param>
         /// <param name="shipmentServiceLevelCategory">The shipment service level category of the order.  Possible values: Expedited, FreeEconomy, NextDay, SameDay, SecondDay, Scheduled, Standard..</param>
-        /// <param name="easyShipShipmentStatus">The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders.  Possible values: PendingPickUp, LabelCanceled, PickedUp, OutForDelivery, Damaged, Delivered, RejectedByBuyer, Undeliverable, ReturnedToSeller, ReturningToSeller..</param>
+        /// <param name="easyShipShipmentStatus">The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders..</param>
         /// <param name="cbaDisplayableShippingLabel">Custom ship label for Checkout by Amazon (CBA)..</param>
         /// <param name="orderType">The type of the order..</param>
-        /// <param name="earliestShipDate">The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: EarliestShipDate might not be returned for orders placed before February 1, 2013..</param>
-        /// <param name="latestShipDate">The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: LatestShipDate might not be returned for orders placed before February 1, 2013..</param>
+        /// <param name="earliestShipDate">The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: EarliestShipDate might not be returned for orders placed before February 1, 2013..</param>
+        /// <param name="latestShipDate">The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: LatestShipDate might not be returned for orders placed before February 1, 2013..</param>
         /// <param name="earliestDeliveryDate">The start of the time period within which you have committed to fulfill the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders..</param>
         /// <param name="latestDeliveryDate">The end of the time period within which you have committed to fulfill the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders that do not have a PendingAvailability, Pending, or Canceled status..</param>
         /// <param name="isBusinessOrder">When true, the order is an Amazon Business order. An Amazon Business order is an order where the buyer is a Verified Business Buyer..</param>
@@ -234,14 +273,23 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         /// <param name="promiseResponseDueDate">Indicates the date by which the seller must respond to the buyer with an estimated ship date. Returned only for Sourcing on Demand orders..</param>
         /// <param name="isEstimatedShipDateSet">When true, the estimated ship date is set for the order. Returned only for Sourcing on Demand orders..</param>
         /// <param name="isSoldByAB">When true, the item within this order was bought and re-sold by Amazon Business EU SARL (ABEU). By buying and instantly re-selling your items, ABEU becomes the seller of record, making your inventory available for sale to customers who would not otherwise purchase from a third-party seller..</param>
+        /// <param name="isIBA">When true, the item within this order was bought and re-sold by Amazon Business EU SARL (ABEU). By buying and instantly re-selling your items, ABEU becomes the seller of record, making your inventory available for sale to customers who would not otherwise purchase from a third-party seller..</param>
         /// <param name="defaultShipFromLocationAddress">The recommended location for the seller to ship the items from. It is calculated at checkout. The seller may or may not choose to ship from this location..</param>
+        /// <param name="buyerInvoicePreference">The buyer&#39;s invoicing preference. Available only in the TR marketplace..</param>
+        /// <param name="buyerTaxInformation">Contains the business invoice tax information..</param>
         /// <param name="fulfillmentInstruction">Contains the instructions about the fulfillment like where should it be fulfilled from..</param>
         /// <param name="isISPU">When true, this order is marked to be picked up from a store rather than delivered..</param>
+        /// <param name="isAccessPointOrder">When true, this order is marked to be delivered to an Access Point. The access location is chosen by the customer. Access Points include Amazon Hub Lockers, Amazon Hub Counters, and pickup points operated by carriers..</param>
         /// <param name="marketplaceTaxInfo">Tax information about the marketplace..</param>
         /// <param name="sellerDisplayName">The seller’s friendly name registered in the marketplace..</param>
         /// <param name="shippingAddress">shippingAddress.</param>
         /// <param name="buyerInfo">buyerInfo.</param>
-        public Order(string amazonOrderId = default(string), string sellerOrderId = default(string), string purchaseDate = default(string), string lastUpdateDate = default(string), OrderStatusEnum orderStatus = default(OrderStatusEnum), FulfillmentChannelEnum? fulfillmentChannel = default(FulfillmentChannelEnum?), string salesChannel = default(string), string orderChannel = default(string), string shipServiceLevel = default(string), Money orderTotal = default(Money), int? numberOfItemsShipped = default(int?), int? numberOfItemsUnshipped = default(int?), PaymentExecutionDetailItemList paymentExecutionDetail = default(PaymentExecutionDetailItemList), PaymentMethodEnum? paymentMethod = default(PaymentMethodEnum?), PaymentMethodDetailItemList paymentMethodDetails = default(PaymentMethodDetailItemList), string marketplaceId = default(string), string shipmentServiceLevelCategory = default(string), string easyShipShipmentStatus = default(string), string cbaDisplayableShippingLabel = default(string), OrderTypeEnum? orderType = default(OrderTypeEnum?), string earliestShipDate = default(string), string latestShipDate = default(string), string earliestDeliveryDate = default(string), string latestDeliveryDate = default(string), bool? isBusinessOrder = default(bool?), bool? isPrime = default(bool?), bool? isPremiumOrder = default(bool?), bool? isGlobalExpressEnabled = default(bool?), string replacedOrderId = default(string), bool? isReplacementOrder = default(bool?), string promiseResponseDueDate = default(string), bool? isEstimatedShipDateSet = default(bool?), bool? isSoldByAB = default(bool?), Address defaultShipFromLocationAddress = default(Address), FulfillmentInstruction fulfillmentInstruction = default(FulfillmentInstruction), bool? isISPU = default(bool?), MarketplaceTaxInfo marketplaceTaxInfo = default(MarketplaceTaxInfo), string sellerDisplayName = default(string), Address shippingAddress = default(Address), BuyerInfo buyerInfo = default(BuyerInfo))
+        /// <param name="automatedShippingSettings">Contains information regarding the Shipping Settings Automaton program, such as whether the order&#39;s shipping settings were generated automatically, and what those settings are..</param>
+        /// <param name="hasRegulatedItems">Whether the order contains regulated items which may require additional approval steps before being fulfilled..</param>
+        /// <param name="electronicInvoiceStatus">The status of the electronic invoice..</param>
+        /// <param name="itemApprovalTypes">Set of approval types which applies to at least one order item in the order..</param>
+        /// <param name="itemApprovalStatus">Subset of all ItemApprovalStatus that are set in at least one of the order items subject to approvals..</param>
+        public Order(string amazonOrderId = default(string), string sellerOrderId = default(string), string purchaseDate = default(string), string lastUpdateDate = default(string), OrderStatusEnum orderStatus = default(OrderStatusEnum), FulfillmentChannelEnum? fulfillmentChannel = default(FulfillmentChannelEnum?), string salesChannel = default(string), string orderChannel = default(string), string shipServiceLevel = default(string), Money orderTotal = default(Money), int? numberOfItemsShipped = default(int?), int? numberOfItemsUnshipped = default(int?), PaymentExecutionDetailItemList paymentExecutionDetail = default(PaymentExecutionDetailItemList), PaymentMethodEnum? paymentMethod = default(PaymentMethodEnum?), PaymentMethodDetailItemList paymentMethodDetails = default(PaymentMethodDetailItemList), string marketplaceId = default(string), string shipmentServiceLevelCategory = default(string), EasyShipShipmentStatus? easyShipShipmentStatus = default(EasyShipShipmentStatus?), string cbaDisplayableShippingLabel = default(string), OrderTypeEnum? orderType = default(OrderTypeEnum?), string earliestShipDate = default(string), string latestShipDate = default(string), string earliestDeliveryDate = default(string), string latestDeliveryDate = default(string), bool? isBusinessOrder = default(bool?), bool? isPrime = default(bool?), bool? isPremiumOrder = default(bool?), bool? isGlobalExpressEnabled = default(bool?), string replacedOrderId = default(string), bool? isReplacementOrder = default(bool?), string promiseResponseDueDate = default(string), bool? isEstimatedShipDateSet = default(bool?), bool? isSoldByAB = default(bool?), bool? isIBA = default(bool?), Address defaultShipFromLocationAddress = default(Address), BuyerInvoicePreferenceEnum? buyerInvoicePreference = default(BuyerInvoicePreferenceEnum?), BuyerTaxInformation buyerTaxInformation = default(BuyerTaxInformation), FulfillmentInstruction fulfillmentInstruction = default(FulfillmentInstruction), bool? isISPU = default(bool?), bool? isAccessPointOrder = default(bool?), MarketplaceTaxInfo marketplaceTaxInfo = default(MarketplaceTaxInfo), string sellerDisplayName = default(string), Address shippingAddress = default(Address), BuyerInfo buyerInfo = default(BuyerInfo), AutomatedShippingSettings automatedShippingSettings = default(AutomatedShippingSettings), bool? hasRegulatedItems = default(bool?), ElectronicInvoiceStatus? electronicInvoiceStatus = default(ElectronicInvoiceStatus?), List<ItemApprovalType> itemApprovalTypes = default(List<ItemApprovalType>), List<ItemApprovalStatus> itemApprovalStatus = default(List<ItemApprovalStatus>))
         {
             // to ensure "amazonOrderId" is required (not null)
             if (amazonOrderId == null)
@@ -308,13 +356,22 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
             this.PromiseResponseDueDate = promiseResponseDueDate;
             this.IsEstimatedShipDateSet = isEstimatedShipDateSet;
             this.IsSoldByAB = isSoldByAB;
+            this.IsIBA = isIBA;
             this.DefaultShipFromLocationAddress = defaultShipFromLocationAddress;
+            this.BuyerInvoicePreference = buyerInvoicePreference;
+            this.BuyerTaxInformation = buyerTaxInformation;
             this.FulfillmentInstruction = fulfillmentInstruction;
             this.IsISPU = isISPU;
+            this.IsAccessPointOrder = isAccessPointOrder;
             this.MarketplaceTaxInfo = marketplaceTaxInfo;
             this.SellerDisplayName = sellerDisplayName;
             this.ShippingAddress = shippingAddress;
             this.BuyerInfo = buyerInfo;
+            this.AutomatedShippingSettings = automatedShippingSettings;
+            this.HasRegulatedItems = hasRegulatedItems;
+            this.ElectronicInvoiceStatus = electronicInvoiceStatus;
+            this.ItemApprovalTypes = itemApprovalTypes;
+            this.ItemApprovalStatus = itemApprovalStatus;
         }
 
         /// <summary>
@@ -339,9 +396,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         public string PurchaseDate { get; set; }
 
         /// <summary>
-        /// The date when the order was last updated.  Note: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01.
+        /// The date when the order was last updated.  __Note__: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01.
         /// </summary>
-        /// <value>The date when the order was last updated.  Note: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01.</value>
+        /// <value>The date when the order was last updated.  __Note__: LastUpdateDate is returned with an incorrect date for orders that were last updated before 2009-04-01.</value>
         [DataMember(Name = "LastUpdateDate", EmitDefaultValue = false)]
         public string LastUpdateDate { get; set; }
 
@@ -390,9 +447,9 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         public int? NumberOfItemsUnshipped { get; set; }
 
         /// <summary>
-        /// Information about sub-payment methods for a Cash On Delivery (COD) order.  Note: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned.
+        /// Information about sub-payment methods for a Cash On Delivery (COD) order.  __Note__: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned.
         /// </summary>
-        /// <value>Information about sub-payment methods for a Cash On Delivery (COD) order.  Note: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned.</value>
+        /// <value>Information about sub-payment methods for a Cash On Delivery (COD) order.  __Note__: For a COD order that is paid for using one sub-payment method, one PaymentExecutionDetailItem object is returned, with PaymentExecutionDetailItem/PaymentMethod &#x3D; COD. For a COD order that is paid for using multiple sub-payment methods, two or more PaymentExecutionDetailItem objects are returned.</value>
         [DataMember(Name = "PaymentExecutionDetail", EmitDefaultValue = false)]
         public PaymentExecutionDetailItemList PaymentExecutionDetail { get; set; }
 
@@ -418,12 +475,6 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         [DataMember(Name = "ShipmentServiceLevelCategory", EmitDefaultValue = false)]
         public string ShipmentServiceLevelCategory { get; set; }
 
-        /// <summary>
-        /// The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders.  Possible values: PendingPickUp, LabelCanceled, PickedUp, OutForDelivery, Damaged, Delivered, RejectedByBuyer, Undeliverable, ReturnedToSeller, ReturningToSeller.
-        /// </summary>
-        /// <value>The status of the Amazon Easy Ship order. This property is included only for Amazon Easy Ship orders.  Possible values: PendingPickUp, LabelCanceled, PickedUp, OutForDelivery, Damaged, Delivered, RejectedByBuyer, Undeliverable, ReturnedToSeller, ReturningToSeller.</value>
-        [DataMember(Name = "EasyShipShipmentStatus", EmitDefaultValue = false)]
-        public string EasyShipShipmentStatus { get; set; }
 
         /// <summary>
         /// Custom ship label for Checkout by Amazon (CBA).
@@ -434,16 +485,16 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
 
 
         /// <summary>
-        /// The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: EarliestShipDate might not be returned for orders placed before February 1, 2013.
+        /// The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: EarliestShipDate might not be returned for orders placed before February 1, 2013.
         /// </summary>
-        /// <value>The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: EarliestShipDate might not be returned for orders placed before February 1, 2013.</value>
+        /// <value>The start of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: EarliestShipDate might not be returned for orders placed before February 1, 2013.</value>
         [DataMember(Name = "EarliestShipDate", EmitDefaultValue = false)]
         public string EarliestShipDate { get; set; }
 
         /// <summary>
-        /// The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: LatestShipDate might not be returned for orders placed before February 1, 2013.
+        /// The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: LatestShipDate might not be returned for orders placed before February 1, 2013.
         /// </summary>
-        /// <value>The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  Note: LatestShipDate might not be returned for orders placed before February 1, 2013.</value>
+        /// <value>The end of the time period within which you have committed to ship the order. In ISO 8601 date time format. Returned only for seller-fulfilled orders.  __Note__: LatestShipDate might not be returned for orders placed before February 1, 2013.</value>
         [DataMember(Name = "LatestShipDate", EmitDefaultValue = false)]
         public string LatestShipDate { get; set; }
 
@@ -525,11 +576,26 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         public bool? IsSoldByAB { get; set; }
 
         /// <summary>
+        /// When true, the item within this order was bought and re-sold by Amazon Business EU SARL (ABEU). By buying and instantly re-selling your items, ABEU becomes the seller of record, making your inventory available for sale to customers who would not otherwise purchase from a third-party seller.
+        /// </summary>
+        /// <value>When true, the item within this order was bought and re-sold by Amazon Business EU SARL (ABEU). By buying and instantly re-selling your items, ABEU becomes the seller of record, making your inventory available for sale to customers who would not otherwise purchase from a third-party seller.</value>
+        [DataMember(Name = "IsIBA", EmitDefaultValue = false)]
+        public bool? IsIBA { get; set; }
+
+        /// <summary>
         /// The recommended location for the seller to ship the items from. It is calculated at checkout. The seller may or may not choose to ship from this location.
         /// </summary>
         /// <value>The recommended location for the seller to ship the items from. It is calculated at checkout. The seller may or may not choose to ship from this location.</value>
         [DataMember(Name = "DefaultShipFromLocationAddress", EmitDefaultValue = false)]
         public Address DefaultShipFromLocationAddress { get; set; }
+
+
+        /// <summary>
+        /// Contains the business invoice tax information.
+        /// </summary>
+        /// <value>Contains the business invoice tax information.</value>
+        [DataMember(Name = "BuyerTaxInformation", EmitDefaultValue = false)]
+        public BuyerTaxInformation BuyerTaxInformation { get; set; }
 
         /// <summary>
         /// Contains the instructions about the fulfillment like where should it be fulfilled from.
@@ -544,6 +610,13 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         /// <value>When true, this order is marked to be picked up from a store rather than delivered.</value>
         [DataMember(Name = "IsISPU", EmitDefaultValue = false)]
         public bool? IsISPU { get; set; }
+
+        /// <summary>
+        /// When true, this order is marked to be delivered to an Access Point. The access location is chosen by the customer. Access Points include Amazon Hub Lockers, Amazon Hub Counters, and pickup points operated by carriers.
+        /// </summary>
+        /// <value>When true, this order is marked to be delivered to an Access Point. The access location is chosen by the customer. Access Points include Amazon Hub Lockers, Amazon Hub Counters, and pickup points operated by carriers.</value>
+        [DataMember(Name = "IsAccessPointOrder", EmitDefaultValue = false)]
+        public bool? IsAccessPointOrder { get; set; }
 
         /// <summary>
         /// Tax information about the marketplace.
@@ -570,6 +643,35 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
         /// </summary>
         [DataMember(Name = "BuyerInfo", EmitDefaultValue = false)]
         public BuyerInfo BuyerInfo { get; set; }
+
+        /// <summary>
+        /// Contains information regarding the Shipping Settings Automaton program, such as whether the order&#39;s shipping settings were generated automatically, and what those settings are.
+        /// </summary>
+        /// <value>Contains information regarding the Shipping Settings Automaton program, such as whether the order&#39;s shipping settings were generated automatically, and what those settings are.</value>
+        [DataMember(Name = "AutomatedShippingSettings", EmitDefaultValue = false)]
+        public AutomatedShippingSettings AutomatedShippingSettings { get; set; }
+
+        /// <summary>
+        /// Whether the order contains regulated items which may require additional approval steps before being fulfilled.
+        /// </summary>
+        /// <value>Whether the order contains regulated items which may require additional approval steps before being fulfilled.</value>
+        [DataMember(Name = "HasRegulatedItems", EmitDefaultValue = false)]
+        public bool? HasRegulatedItems { get; set; }
+
+
+        /// <summary>
+        /// Set of approval types which applies to at least one order item in the order.
+        /// </summary>
+        /// <value>Set of approval types which applies to at least one order item in the order.</value>
+        [DataMember(Name = "ItemApprovalTypes", EmitDefaultValue = false)]
+        public List<ItemApprovalType> ItemApprovalTypes { get; set; }
+
+        /// <summary>
+        /// Subset of all ItemApprovalStatus that are set in at least one of the order items subject to approvals.
+        /// </summary>
+        /// <value>Subset of all ItemApprovalStatus that are set in at least one of the order items subject to approvals.</value>
+        [DataMember(Name = "ItemApprovalStatus", EmitDefaultValue = false)]
+        public List<ItemApprovalStatus> ItemApprovalStatus { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -612,13 +714,22 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
             sb.Append("  PromiseResponseDueDate: ").Append(PromiseResponseDueDate).Append("\n");
             sb.Append("  IsEstimatedShipDateSet: ").Append(IsEstimatedShipDateSet).Append("\n");
             sb.Append("  IsSoldByAB: ").Append(IsSoldByAB).Append("\n");
+            sb.Append("  IsIBA: ").Append(IsIBA).Append("\n");
             sb.Append("  DefaultShipFromLocationAddress: ").Append(DefaultShipFromLocationAddress).Append("\n");
+            sb.Append("  BuyerInvoicePreference: ").Append(BuyerInvoicePreference).Append("\n");
+            sb.Append("  BuyerTaxInformation: ").Append(BuyerTaxInformation).Append("\n");
             sb.Append("  FulfillmentInstruction: ").Append(FulfillmentInstruction).Append("\n");
             sb.Append("  IsISPU: ").Append(IsISPU).Append("\n");
+            sb.Append("  IsAccessPointOrder: ").Append(IsAccessPointOrder).Append("\n");
             sb.Append("  MarketplaceTaxInfo: ").Append(MarketplaceTaxInfo).Append("\n");
             sb.Append("  SellerDisplayName: ").Append(SellerDisplayName).Append("\n");
             sb.Append("  ShippingAddress: ").Append(ShippingAddress).Append("\n");
             sb.Append("  BuyerInfo: ").Append(BuyerInfo).Append("\n");
+            sb.Append("  AutomatedShippingSettings: ").Append(AutomatedShippingSettings).Append("\n");
+            sb.Append("  HasRegulatedItems: ").Append(HasRegulatedItems).Append("\n");
+            sb.Append("  ElectronicInvoiceStatus: ").Append(ElectronicInvoiceStatus).Append("\n");
+            sb.Append("  ItemApprovalTypes: ").Append(ItemApprovalTypes).Append("\n");
+            sb.Append("  ItemApprovalStatus: ").Append(ItemApprovalStatus).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -819,9 +930,24 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
                     this.IsSoldByAB.Equals(input.IsSoldByAB))
                 ) &&
                 (
+                    this.IsIBA == input.IsIBA ||
+                    (this.IsIBA != null &&
+                    this.IsIBA.Equals(input.IsIBA))
+                ) &&
+                (
                     this.DefaultShipFromLocationAddress == input.DefaultShipFromLocationAddress ||
                     (this.DefaultShipFromLocationAddress != null &&
                     this.DefaultShipFromLocationAddress.Equals(input.DefaultShipFromLocationAddress))
+                ) &&
+                (
+                    this.BuyerInvoicePreference == input.BuyerInvoicePreference ||
+                    (this.BuyerInvoicePreference != null &&
+                    this.BuyerInvoicePreference.Equals(input.BuyerInvoicePreference))
+                ) &&
+                (
+                    this.BuyerTaxInformation == input.BuyerTaxInformation ||
+                    (this.BuyerTaxInformation != null &&
+                    this.BuyerTaxInformation.Equals(input.BuyerTaxInformation))
                 ) &&
                 (
                     this.FulfillmentInstruction == input.FulfillmentInstruction ||
@@ -832,6 +958,11 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
                     this.IsISPU == input.IsISPU ||
                     (this.IsISPU != null &&
                     this.IsISPU.Equals(input.IsISPU))
+                ) &&
+                (
+                    this.IsAccessPointOrder == input.IsAccessPointOrder ||
+                    (this.IsAccessPointOrder != null &&
+                    this.IsAccessPointOrder.Equals(input.IsAccessPointOrder))
                 ) &&
                 (
                     this.MarketplaceTaxInfo == input.MarketplaceTaxInfo ||
@@ -852,6 +983,29 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
                     this.BuyerInfo == input.BuyerInfo ||
                     (this.BuyerInfo != null &&
                     this.BuyerInfo.Equals(input.BuyerInfo))
+                ) &&
+                (
+                    this.AutomatedShippingSettings == input.AutomatedShippingSettings ||
+                    (this.AutomatedShippingSettings != null &&
+                    this.AutomatedShippingSettings.Equals(input.AutomatedShippingSettings))
+                ) &&
+                (
+                    this.HasRegulatedItems == input.HasRegulatedItems ||
+                    (this.HasRegulatedItems != null &&
+                    this.HasRegulatedItems.Equals(input.HasRegulatedItems))
+                ) &&
+                (
+                    this.ElectronicInvoiceStatus == input.ElectronicInvoiceStatus ||
+                    (this.ElectronicInvoiceStatus != null &&
+                    this.ElectronicInvoiceStatus.Equals(input.ElectronicInvoiceStatus))
+                ) &&
+                (
+                    this.ItemApprovalTypes == input.ItemApprovalTypes ||
+                    this.ItemApprovalTypes != null
+                ) &&
+                (
+                    this.ItemApprovalStatus == input.ItemApprovalStatus ||
+                    this.ItemApprovalStatus != null
                 );
         }
 
@@ -930,12 +1084,20 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
                     hashCode = hashCode * 59 + this.IsEstimatedShipDateSet.GetHashCode();
                 if (this.IsSoldByAB != null)
                     hashCode = hashCode * 59 + this.IsSoldByAB.GetHashCode();
+                if (this.IsIBA != null)
+                    hashCode = hashCode * 59 + this.IsIBA.GetHashCode();
                 if (this.DefaultShipFromLocationAddress != null)
                     hashCode = hashCode * 59 + this.DefaultShipFromLocationAddress.GetHashCode();
+                if (this.BuyerInvoicePreference != null)
+                    hashCode = hashCode * 59 + this.BuyerInvoicePreference.GetHashCode();
+                if (this.BuyerTaxInformation != null)
+                    hashCode = hashCode * 59 + this.BuyerTaxInformation.GetHashCode();
                 if (this.FulfillmentInstruction != null)
                     hashCode = hashCode * 59 + this.FulfillmentInstruction.GetHashCode();
                 if (this.IsISPU != null)
                     hashCode = hashCode * 59 + this.IsISPU.GetHashCode();
+                if (this.IsAccessPointOrder != null)
+                    hashCode = hashCode * 59 + this.IsAccessPointOrder.GetHashCode();
                 if (this.MarketplaceTaxInfo != null)
                     hashCode = hashCode * 59 + this.MarketplaceTaxInfo.GetHashCode();
                 if (this.SellerDisplayName != null)
@@ -944,6 +1106,16 @@ namespace FikaAmazonAPI.AmazonSpApiSDK.Models.Orders
                     hashCode = hashCode * 59 + this.ShippingAddress.GetHashCode();
                 if (this.BuyerInfo != null)
                     hashCode = hashCode * 59 + this.BuyerInfo.GetHashCode();
+                if (this.AutomatedShippingSettings != null)
+                    hashCode = hashCode * 59 + this.AutomatedShippingSettings.GetHashCode();
+                if (this.HasRegulatedItems != null)
+                    hashCode = hashCode * 59 + this.HasRegulatedItems.GetHashCode();
+                if (this.ElectronicInvoiceStatus != null)
+                    hashCode = hashCode * 59 + this.ElectronicInvoiceStatus.GetHashCode();
+                if (this.ItemApprovalTypes != null)
+                    hashCode = hashCode * 59 + this.ItemApprovalTypes.GetHashCode();
+                if (this.ItemApprovalStatus != null)
+                    hashCode = hashCode * 59 + this.ItemApprovalStatus.GetHashCode();
                 return hashCode;
             }
         }
